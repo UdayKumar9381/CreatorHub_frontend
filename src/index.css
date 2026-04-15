@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --foreground: #ffffff;
+  --apple-gray: #111111;
+  --apple-green: #34c759;
+  --apple-green-light: #16261a;
+  --sky-blue: #0ea5e9;
+  --soft-pink: #f472b6;
+  --sky-blue-light: #082f49;
+  --soft-pink-light: #451225;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-apple-gray: var(--apple-gray);
+  --color-apple-green: var(--apple-green);
+  --color-apple-green-light: var(--apple-green-light);
+  --color-sky-blue: var(--sky-blue);
+  --color-soft-pink: var(--soft-pink);
+  --color-sky-blue-light: var(--sky-blue-light);
+  --color-soft-pink-light: var(--soft-pink-light);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 6s ease infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-30px) translateX(20px); }
+  66% { transform: translateY(-15px) translateX(-20px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+.animate-float {
+  animation: float 15s ease-in-out infinite;
+}
