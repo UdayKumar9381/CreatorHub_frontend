@@ -1,5 +1,6 @@
-import axios, { AxiosInstance } from 'axios';
-import { 
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+import type { 
   AuthResponse, 
   Idea, 
   Note, 
@@ -13,6 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://ideaflow-backend-xerc.o
 const api: AxiosInstance = axios.create({
   baseURL: API_URL,
 });
+
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');

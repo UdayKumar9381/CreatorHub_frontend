@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { checklistService } from '../services/api';
-import { ChecklistItem } from '../types';
+import type { ChecklistItem } from '../types';
 
 export function useChecklist() {
   const [items, setItems] = useState<ChecklistItem[]>([]);

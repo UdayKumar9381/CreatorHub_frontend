@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { Trophy } from 'lucide-react';
 import { useProjects } from '../hooks/useProjects';
 import Loader from '../components/Loader';

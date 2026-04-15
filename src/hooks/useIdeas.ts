@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { ideaService, aiService } from '../services/api';
-import { Idea } from '../types';
+import type { Idea } from '../types';
 
 export function useIdeas() {
   const [ideas, setIdeas] = useState<Idea[]>([]);

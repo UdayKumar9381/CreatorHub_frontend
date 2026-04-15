@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import { noteService } from '../services/api';
-import { Note } from '../types';
+import type { Note } from '../types';
 
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [activeNote, setActiveNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchNotes = useCallback(async () => {
     try {

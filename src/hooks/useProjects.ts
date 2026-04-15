@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 import { projectService } from '../services/api';
-import { Project } from '../types';
+import type { Project } from '../types';
 
 export function useProjects() {
   const [projects, setProjects] = useState<Project[]>([]);

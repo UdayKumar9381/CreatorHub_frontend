@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useIdeas } from '../hooks/useIdeas';
 import Loader from '../components/Loader';
 import { IdeaHeader } from '../components/ideas/IdeaHeader';
