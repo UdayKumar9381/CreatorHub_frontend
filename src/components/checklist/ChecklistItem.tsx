@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckSquare, Square, Trash2, Calendar } from 'lucide-react';
-import { ChecklistItem as ChecklistItemType } from '../../types';
+import type { ChecklistItem as ChecklistItemType } from '../../types';
 import { GlassCard } from '../GlassCard';
 
 interface ChecklistItemProps {

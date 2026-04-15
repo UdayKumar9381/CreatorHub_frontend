@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
-import { Note } from '../../types';
+import type { Note } from '../../types';
 import { GlassCard } from '../GlassCard';
 
 interface NoteCardProps {

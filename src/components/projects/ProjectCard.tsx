@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Trash2 } from 'lucide-react';
-import { Project } from '../../types';
+import type { Project } from '../../types';
 import { GlassCard } from '../GlassCard';
 
 interface ProjectCardProps {

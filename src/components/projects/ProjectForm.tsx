@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard } from '../GlassCard';
-import { Project } from '../../types';
+import type { Project } from '../../types';
 
 interface ProjectFormProps {
   show: boolean;

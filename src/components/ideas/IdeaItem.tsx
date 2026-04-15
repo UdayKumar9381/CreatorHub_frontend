@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Circle, Trash2 } from 'lucide-react';
-import { Idea } from '../../types';
+import type { Idea } from '../../types';
 import { GlassCard } from '../GlassCard';
 
 interface IdeaItemProps {
