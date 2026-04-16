@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, ArrowLeft, Send } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import { authService } from '../services/api';
 import { GlassCard } from '../components/GlassCard';
 import DNABackground from '../components/DNABackground';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://ideaflow-backend-xerc.onrender.com';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -18,7 +16,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/auth/forgot-password`, { email });
+      await authService.forgotPassword(email);
       setSent(true);
       toast.success('Reset link sent to your email (check console)');
     } catch (err: any) {

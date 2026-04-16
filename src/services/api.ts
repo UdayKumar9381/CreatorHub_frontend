@@ -9,32 +9,70 @@ import type {
   AIResponse 
 } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://ideaflow-backend-xerc.onrender.com';
+// Use process.env.NEXT_PUBLIC_API_URL per user requirements
+// We ensure no trailing slash here
+const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ideaflow-backend-xerc.onrender.com';
+const API_URL = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
+
+// Log baseURL once for debugging
+console.log('🚀 IDEAFlow API Base URL:', API_URL);
+
+if (!API_URL) {
+  console.error('❌ NEXT_PUBLIC_API_URL is undefined! Please check your environment variables.');
+}
 
 const api: AxiosInstance = axios.create({
   baseURL: API_URL,
-});
-
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+  withCredentials: true, // Required for secure cookie handling if applicable
+  headers: {
+    'Content-Type': 'application/json',
   }
-  return config;
 });
 
-api.interceptors.response.use(
-  (response) => response,
+// Request Interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    // Debug log for outgoing requests in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`, config.data);
+    }
+    return config;
+  },
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      // Instead of hard reload, we could trigger a custom event or a context update
-      // For now, redirecting to login is expected but using router is better
-      // Since we can't easily use hooks here, we'll keep the redirect but make it safer
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+    return Promise.reject(error);
+  }
+);
+
+// Response Interceptor
+api.interceptors.response.use(
+  (response) => {
+    // Debug log for responses in development
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`[API Response] ${response.status} ${response.config.url}`, response.data);
+    }
+    return response;
+  },
+  (error) => {
+    // Global Error Handling
+    if (error.response) {
+      // Server responded with a status code outside the 2xx range
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
       }
+      console.error(`[API Error Response] ${error.response.status}:`, error.response.data);
+    } else if (error.request) {
+      // Request was made but no response was received (Network Error)
+      console.error('[API Network Error]: No response received from server.');
+    } else {
+      // Something happened in setting up the request
+      console.error('[API Configuration Error]:', error.message);
     }
     return Promise.reject(error);
   }
@@ -43,6 +81,8 @@ api.interceptors.response.use(
 export const authService = {
   login: (data: any) => api.post<AuthResponse>('/auth/login', data),
   signup: (data: any) => api.post<any>('/auth/signup', data),
+  forgotPassword: (email: string) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (data: any) => api.post('/auth/reset-password', data),
 };
 
 export const ideaService = {

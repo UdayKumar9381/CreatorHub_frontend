@@ -3,11 +3,9 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, ArrowRight, CheckCircle } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import { authService } from '../services/api';
 import { GlassCard } from '../components/GlassCard';
 import DNABackground from '../components/DNABackground';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://ideaflow-backend-xerc.onrender.com';
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -32,7 +30,7 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/auth/reset-password`, { token, new_password: password });
+      await authService.resetPassword({ token, new_password: password });
       setDone(true);
       toast.success('Password updated!');
     } catch (err: any) {
