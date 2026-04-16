@@ -20,10 +20,11 @@ export default function AIAssistant() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    // Scroll to bottom when message list changes or when assistant is opened
+    if (scrollRef.current && isOpen) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isOpen]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();

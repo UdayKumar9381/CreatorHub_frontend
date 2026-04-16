@@ -11,19 +11,21 @@ import type {
 
 // Use process.env.NEXT_PUBLIC_API_URL per user requirements
 // We ensure no trailing slash here
-const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ideaflow-backend-xerc.onrender.com';
-const API_URL = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
+const getBaseUrl = () => {
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    const fallback = 'https://ideaflow-backend-xerc.onrender.com';
+    const url = envUrl || fallback;
+    return url.endsWith('/') ? url.slice(0, -1) : url;
+};
+
+const API_URL = getBaseUrl();
 
 // Log baseURL once for debugging
 console.log('🚀 IDEAFlow API Base URL:', API_URL);
 
-if (!API_URL) {
-  console.error('❌ NEXT_PUBLIC_API_URL is undefined! Please check your environment variables.');
-}
-
 const api: AxiosInstance = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // Required for secure cookie handling if applicable
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   }
@@ -59,19 +61,17 @@ api.interceptors.response.use(
   (error) => {
     // Global Error Handling
     if (error.response) {
-      // Server responded with a status code outside the 2xx range
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        // Clear auth data and only redirect if not already on the login page
         if (!window.location.pathname.includes('/login')) {
-          window.location.href = '/login';
+          localStorage.removeItem('token');
+          window.location.href = '/login?session=expired';
         }
       }
       console.error(`[API Error Response] ${error.response.status}:`, error.response.data);
     } else if (error.request) {
-      // Request was made but no response was received (Network Error)
       console.error('[API Network Error]: No response received from server.');
     } else {
-      // Something happened in setting up the request
       console.error('[API Configuration Error]:', error.message);
     }
     return Promise.reject(error);
@@ -120,4 +120,3 @@ export const checklistService = {
 };
 
 export default api;
-

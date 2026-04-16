@@ -17,8 +17,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    // Thorough cleanup of session data
     localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.clear(); // Clear all potential local state
+    
+    // Redirect to login with explicit logout flag
+    navigate('/login?logout=success');
   };
 
   const renderView = () => {

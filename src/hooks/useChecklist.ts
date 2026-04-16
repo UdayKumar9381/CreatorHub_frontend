@@ -27,7 +27,13 @@ export function useChecklist() {
     if (!title.trim()) return false;
     try {
       const payload: Partial<ChecklistItem> = { title, priority, category };
-      if (dueDate) payload.due_date = new Date(dueDate).toISOString();
+      if (dueDate) {
+        try {
+          payload.due_date = new Date(dueDate).toISOString();
+        } catch (e) {
+          console.error('Invalid date format:', dueDate);
+        }
+      }
       
       const res = await checklistService.createItem(payload);
       setItems(prev => [res.data, ...prev]);
@@ -46,12 +52,9 @@ export function useChecklist() {
     
     try {
       await checklistService.updateItem(item.id, { is_completed: !item.is_completed });
-      if (!item.is_completed) {
-        toast.success('Task completed! 🎉');
-      }
     } catch (err) {
-      setItems(originalItems); // Rollback
-      toast.error('Update failed');
+      setItems(originalItems); // Rollback on failure
+      toast.error('Sync failed. Please try again.');
     }
   };
 
